@@ -1,5 +1,6 @@
 package com.example.financeSys.services;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.example.financeSys.entity.User;
 import com.example.financeSys.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,12 @@ public class UserService {
     private UserRepository repository;
 
     public ResponseEntity<String> create(User user) {
-        if(repository.findByUsername(user.getUsername()) != null){
+        if (repository.findByUsername(user.getUsername()) != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists in the database");
         }
         try {
+            var hashPassword = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
+            user.setPassword(hashPassword);
             repository.save(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
         } catch (RuntimeException e) {
