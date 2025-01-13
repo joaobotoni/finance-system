@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: "financeSys"
+
+  datasource:
+    url: jdbc:h2:mem:finance
+    driverClassName: org.h2.Driver
+    username: admin
+    password: root
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
