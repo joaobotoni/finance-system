@@ -8,8 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -26,4 +26,6 @@ public class User {
     private String password;
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+
 }
