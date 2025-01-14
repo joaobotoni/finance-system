@@ -1,5 +1,6 @@
 package com.example.financeSys.services;
 
+import com.example.financeSys.dto.TransactionDTO;
 import com.example.financeSys.entity.Transaction;
 import com.example.financeSys.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,14 @@ public class TransactionService {
     @Autowired
     private TransactionRepository repository;
 
-    public ResponseEntity created(Transaction transaction){
+    public ResponseEntity<TransactionDTO> created(Transaction transaction){
         try {
             repository.save(transaction);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Transaction: " + transaction.getId() + " created successfully");
+            TransactionDTO transactionDTO = new TransactionDTO(transaction);
+            return ResponseEntity.status(HttpStatus.CREATED).body(transactionDTO);
         }
         catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating transaction");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 }

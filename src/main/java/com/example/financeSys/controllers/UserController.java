@@ -1,6 +1,7 @@
 package com.example.financeSys.controllers;
 
 
+import com.example.financeSys.dto.UserDTO;
 import com.example.financeSys.entity.User;
 import com.example.financeSys.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/create")
-    public ResponseEntity<String> created(@RequestBody User user){
+    public ResponseEntity<UserDTO> created(@RequestBody User user){
         return service.create(user);
     }
 }
