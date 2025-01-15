@@ -25,11 +25,14 @@ public class FilterAuth extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var servletPath = request.getServletPath();
-        if ("/transaction/create".equals(servletPath)) {
+        String servletPath = request.getServletPath();
+
+        // Você pode querer aplicar a verificação para todos os caminhos relacionados a transações, como "/transaction/*"
+        if (servletPath.startsWith("/transaction")) {
             String authorization = request.getHeader(AUTHORIZATION_HEADER);
-            if (authorization.isEmpty()) {
+            if (authorization == null || authorization.isEmpty()) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Authorization header is missing");
+                return;
             }
 
             try {
@@ -37,6 +40,7 @@ public class FilterAuth extends OncePerRequestFilter {
                 byte[] authDecoded = Base64.getDecoder().decode(authEncoded);
                 String authString = new String(authDecoded);
                 String[] credentials = authString.split(":");
+
                 var validationResponse = service.validateCredentials(credentials[0], credentials[1]);
 
                 if (validationResponse.getStatusCode() == HttpStatus.ACCEPTED) {
@@ -57,4 +61,5 @@ public class FilterAuth extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
     }
+
 }

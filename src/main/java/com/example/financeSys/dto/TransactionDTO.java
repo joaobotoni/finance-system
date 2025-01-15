@@ -17,6 +17,7 @@ public class TransactionDTO {
     private TransactionType type;
     private String description;
     private String category;
+    private UUID userId;
 
     public TransactionDTO(Transaction transaction) {
         amount = transaction.getAmount();
@@ -24,5 +25,6 @@ public class TransactionDTO {
         type = transaction.getType();
         description = transaction.getDescription();
         category = transaction.getCategory();
+        userId = transaction.getUserId();
     }
 }
