@@ -26,8 +26,6 @@ public class FilterAuth extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String servletPath = request.getServletPath();
-
-        // Você pode querer aplicar a verificação para todos os caminhos relacionados a transações, como "/transaction/*"
         if (servletPath.startsWith("/transaction")) {
             String authorization = request.getHeader(AUTHORIZATION_HEADER);
             if (authorization == null || authorization.isEmpty()) {
@@ -61,5 +59,4 @@ public class FilterAuth extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
     }
-
 }
