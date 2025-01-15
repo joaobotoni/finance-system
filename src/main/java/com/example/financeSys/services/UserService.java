@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
+
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
 
     public ResponseEntity<UserDTO> create(User user) {
         if (repository.findByUsername(user.getUsername()) != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         try {
             var hashPassword = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
@@ -32,6 +35,6 @@ public class UserService {
 
     public UserDTO findByUsername(String username) {
         var result = repository.findByUsername(username);
-        return new UserDTO(result);
+        return result != null ? new UserDTO(result) : null;
     }
 }

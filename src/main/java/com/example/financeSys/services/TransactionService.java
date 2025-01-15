@@ -11,16 +11,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransactionService {
 
-    @Autowired
-    private TransactionRepository repository;
+    private final TransactionRepository repository;
 
-    public ResponseEntity<TransactionDTO> created(Transaction transaction){
+    public TransactionService(TransactionRepository repository) {
+        this.repository = repository;
+    }
+
+    public ResponseEntity<TransactionDTO> created(Transaction transaction) {
         try {
             repository.save(transaction);
             TransactionDTO transactionDTO = new TransactionDTO(transaction);
             return ResponseEntity.status(HttpStatus.CREATED).body(transactionDTO);
-        }
-        catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
